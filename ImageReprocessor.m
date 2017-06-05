@@ -3,7 +3,8 @@ clc
 
 % ---------------------------- INPUTS -------------------------------------
 
-% Ideally move these into a separate .mat input file or UI
+% Ideally move these into a separate .mat input file or UI to avoid
+% changing this code every time
 
 % Location of images 
 imageDir = 'E:\My Documents\Post Doc\Staff and Student Projects\MAT4444\2017\Group 7 - Ashfan\Thermal camera images\6-1 mm 50ms\' ;
