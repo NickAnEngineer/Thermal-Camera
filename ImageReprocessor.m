@@ -29,7 +29,8 @@ elseif strcmp(in.individualOrRange,'range')
 else
     error('Define where a single image or a stack of images is being processed')
 end
-
+PreviouslySaturated = false(2048,2048);
+stefanb = 5.670373e-8 ;
 
 for imageNo = imageRange % Don't know if a for loop is the best way for this
     
@@ -39,7 +40,17 @@ for imageNo = imageRange % Don't know if a for loop is the best way for this
         fullFilename = [in.imageRangeHangle num2str(imageNo) '.tif'] ;
     end
     
-    [ColourImage] = tempCal(fullFilename, in); % Replace this function with the calibration curve function
+    RawImage = imread(fullFilename);
+    
+    CurentlySaturated = RawImage==2^16-1;
+    
+    PreviouslySaturated = or(CurentlySaturated,PreviouslySaturated);
+    
+    emissivity = ones(2048,2048)*0.5;
+    
+    emissivity(PreviouslySaturated) = 0.27;
+    
+    [ColourImage, appTemps] = tempCal(fullFilename, emissivity, in); % Replace this function with the calibration curve function
     
     if in.cropImage == 1
         ColourImage = imcrop(ColourImage, in.croppedDIM) ;
@@ -52,7 +63,8 @@ for imageNo = imageRange % Don't know if a for loop is the best way for this
     if in.writeImages == 1 % Save re-processed image to specified location
         imwrite(ColourImage,[reprocessedDir num2str(imageNo) '.png']) ;
     end
-
+    figure
+    imagesc(ColourImage)
 end
 
 if in.createVideo == 1
