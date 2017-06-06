@@ -1,9 +1,10 @@
-clear VARIABLES
+clear all
 clc
 
 % ---------------------------- INPUTS -------------------------------------
 
-uigetfile % Selects the input file which is inputParams in repository
+[inFile,inPath] = uigetfile ; % Selects the input file which is inputParams in repository
+run([inPath inFile])
 % Ideally replace this with a UI at some point. All input parameters are
 % structured under 'in' e.g. in.imageRange
 
