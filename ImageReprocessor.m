@@ -16,9 +16,9 @@ if in.createVideo + in.writeImages > 0 % Creates a folder in the images dir for 
 end
 
 if in.createVideo == 1 % Open video file to add frames
-    in.vidName = input('Enter a name for the video file: ') ; % Asks for a file name for vid
+    in.vidName = input('Enter a name for the video file: ','s') ; % Asks for a file name for vid
     v = VideoWriter([reprocessedDir in.vidName],in.format); % Directory and format of vid
-    v.FrameRate=frameRate; % Set the frame rate of the video
+    v.FrameRate=in.frameRate; % Set the frame rate of the video
     open(v);
 end
 
