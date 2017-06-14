@@ -17,6 +17,9 @@ function [ColourImage] = tempCal(fullFilename, in)
 		case 3 % Calibrated Temperature Conversion
 			calData = load(in.tempMapLoc);
 			convertedImage = interp1(calData(:,2), calData(:,1), double(rawImage), 'nearest');
+			if in.units == 'c'
+				convertedImage = convertedImage - 273.15;
+			end
     end
     
     ColourImage = ind2rgb(convertedImage, colourMap);
