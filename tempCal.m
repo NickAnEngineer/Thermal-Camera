@@ -7,11 +7,11 @@ function [ColourImage, GreyImage] = tempCal(fullFilename, in)
     
 	switch in.intensityCrv
         case 1 % Raw intensities
-
+			convertedImage = double(rawImage);
         case 2 % Intensities fourth rooted
 			intensityImage = rawImage + 1 ;
-            convertedImage = (double(intensityImage)).^0.25 * in.contrastRange/(in.contrastRange).^0.25 ;
-            convertedImage = floor(intensityImage) ;
+            convertedImage = (double(intensityImage)).^0.25 * in.contrastRange/(in.contrastRange).^0.25;
+            convertedImage = floor(intensityImage);
 			
 		case 3 % Calibrated Temperature Conversion
 			load(in.tempMapLoc);

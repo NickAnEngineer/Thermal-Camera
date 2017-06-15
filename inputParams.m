@@ -6,6 +6,7 @@ in.individualOrRange = 'range' ; % 'individual' for single image 'range' for a s
 in.individualImageName = '6-2mm 50ms 3\' ;
 in.imageRangeHangle = [in.imageDir 'img'] ; % First part of image filename excluding number
 in.imageRange = 1:3 ; % Range of images to use ; %200 - 1300 or 742 to 978
+in.numberPadding = 5; %number of chars the image ending is represented by e.g 0001 = 4 
 
 % Image output options
 in.writeImages = 1 ; % Write individual images

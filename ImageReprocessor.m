@@ -35,38 +35,42 @@ else
     error('Define where a single image or a stack of images is being processed')
 end
 
+fprintf('Progress: 000.0%%');
 
 for imageNo = imageRange % Don't know if a for loop is the best way for this
-    
+	
     if strcmp(in.individualOrRange,'individual')
         fullFilename = [in.imageDir in.individualImageName '.tif'] ;
     else
-        fullFilename = [in.imageRangeHangle num2str(imageNo) '.tif'] ;
+        fullFilename = [in.imageRangeHangle num2str(imageNo, ['%0' num2str(in.numberPadding) 'd']) '.tif'] ;
     end
     
     [ColourImage, GreyImage] = tempCal(fullFilename, in); % Replace this function with the calibration curve function
     
-    if in.cropImage == 1
+	if in.cropImage == 1
         ColourImage = imcrop(ColourImage, in.croppedDIM);
 		if in.includeGrey == 1
 			GreyImage = imcrop(GreyImage, in.croppedDIM);
 		end
-    end
-
-    if in.createVideo == 1 % Add frame to video 
+	end
+	
+	if in.createVideo == 1 % Add frame to video
         writeVideo(vColour, ColourImage);
 		if in.includeGrey == 1
 			writeVideo(vGrey, (double(GreyImage) / 65536));
 		end
-    end
-    
-    if in.writeImages == 1 % Save re-processed image to specified location
+	end
+	
+	if in.writeImages == 1 % Save re-processed image to specified location
         imwrite(ColourImage, [reprocessedDir num2str(imageNo) '.png']) ;
 		if in.includeGrey == 1
 			imwrite(GreyImage, [reprocessedDir num2str(imageNo) '.tif']) ;
 		end
-    end
+	end
 
+	% display progress 
+	fprintf('\b\b\b\b'); %delete previous
+	fprintf('%3.1f%%', ((imageNo / length(imageRange)) * 100));
 end
 
 if in.createVideo == 1
