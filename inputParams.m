@@ -12,11 +12,12 @@ in.writeImages = 1 ; % Write individual images
 in.addImageText = 0 ; % Add text to images such as FPS and time stamp
 in.cropImage = 0 ; % Crop the image according to properties listed below
 in.imRotate = 0 ; % Angle to rotate image
-in.contrastRange = 2^16 ; % Set the upper limit for intensity
-in.intensityCrv = 2 ; % 1 - Intensities, 2 - pseudo temps (^4), 3 - Temp map
+in.contrastRange = 1200 ; % Set the upper limit for intensity
+in.intensityCrv = 3 ; % 1 - Intensities, 2 - pseudo temps (^4), 3 - Temp map
 in.tempMapLoc = 'PATH TO CalData.mat'; %mat file containing cal data temp in first col, dl in second col
 in.units = 'c'; %specify units for output image degrees celsius (c) or degrees kelvin (k)
 in.croppedDIM = [150 0 2000 1800] ; % Image cropping [xmin ymin width height]
+in.includeGrey = 1; % include black and white images in the image output and video
 
 % Video output properties
 in.createVideo = 1 ; % Create video
