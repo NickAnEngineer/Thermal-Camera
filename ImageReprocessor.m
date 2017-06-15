@@ -17,9 +17,14 @@ end
 
 if in.createVideo == 1 % Open video file to add frames
     in.vidName = input('Enter a name for the video file: ','s') ; % Asks for a file name for vid
-    v = VideoWriter([reprocessedDir in.vidName],in.format); % Directory and format of vid
-    v.FrameRate=in.frameRate; % Set the frame rate of the video
-    open(v);
+    vColour = VideoWriter([reprocessedDir in.vidName ' Colour'],in.format); % Directory and format of vid
+    vColour.FrameRate=in.frameRate; % Set the frame rate of the video
+    open(vColour);
+	if in.includeGrey == 1
+		vGrey = VideoWriter([reprocessedDir in.vidName ' Grey'],in.format); % Directory and format of vid
+		vGrey.FrameRate=in.frameRate; % Set the frame rate of the video
+		open(vGrey);
+	end
 end
 
 if strcmp(in.individualOrRange,'individual')
@@ -39,24 +44,36 @@ for imageNo = imageRange % Don't know if a for loop is the best way for this
         fullFilename = [in.imageRangeHangle num2str(imageNo) '.tif'] ;
     end
     
-    [ColourImage] = tempCal(fullFilename, in); % Replace this function with the calibration curve function
+    [ColourImage, GreyImage] = tempCal(fullFilename, in); % Replace this function with the calibration curve function
     
     if in.cropImage == 1
-        ColourImage = imcrop(ColourImage, in.croppedDIM) ;
+        ColourImage = imcrop(ColourImage, in.croppedDIM);
+		if in.includeGrey == 1
+			GreyImage = imcrop(GreyImage, in.croppedDIM);
+		end
     end
 
     if in.createVideo == 1 % Add frame to video 
-        writeVideo(v,ColourImage);
+        writeVideo(vColour, ColourImage);
+		if in.includeGrey == 1
+			writeVideo(vGrey, (double(GreyImage) / 65536));
+		end
     end
     
     if in.writeImages == 1 % Save re-processed image to specified location
-        imwrite(ColourImage,[reprocessedDir num2str(imageNo) '.png']) ;
+        imwrite(ColourImage, [reprocessedDir num2str(imageNo) '.png']) ;
+		if in.includeGrey == 1
+			imwrite(GreyImage, [reprocessedDir num2str(imageNo) '.tif']) ;
+		end
     end
 
 end
 
 if in.createVideo == 1
-    close(v);
+    close(vColour);
+	if in.includeGrey == 1
+		close(vGrey)
+	end
 end
 
 
